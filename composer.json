@@ -1,0 +1,12 @@
+{
+    "name": "benpoulon/usgeolocation",
+    "require": {
+        "hannesvdvreken/pip": "^1.0"
+    },
+    "authors": [
+        {
+            "name": "Ben Poulson",
+            "email": "ben@terravita.co.uk"
+        }
+    ]
+}
