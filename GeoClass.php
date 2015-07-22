@@ -48,7 +48,7 @@ class GeoClass {
 		return $dist * 60 * 1.1515; // Miles
 	}
 
-	public function getStateFromLatLong($lat, $lon) {
+	public function getStateFromLatLong($lat, $lon, $field = "NAME") {
 
 		$stateCenterDistance = [];
 		$statePolygons = [];
@@ -63,11 +63,11 @@ class GeoClass {
 						}
 
 						if($this->insideStatePolygon($lat, $lon, $polyCoords))
-							return $item->properties->NAME;
+							return $item->properties->$field;
 
 						$centerPosition = $this->getPolyCenter($polyCoords);
-						$stateCenterDistance[$item->properties->NAME][] = $this->getLatLongDistance($lat, $lon, $centerPosition[0], $centerPosition[1]);
-						$statePolygons[$item->properties->NAME][] = $poly;
+						$stateCenterDistance[$item->properties->$field][] = $this->getLatLongDistance($lat, $lon, $centerPosition[0], $centerPosition[1]);
+						$statePolygons[$item->properties->$field][] = $poly;
 					}
 				}
 				else
@@ -77,12 +77,12 @@ class GeoClass {
 						$polyCoords[] = [$point[1], $point[0]];
 
 					if($this->insideStatePolygon($lat, $lon, $polyCoords))
-						return $item->properties->NAME;
+						return $item->properties->$field;
 
 					$centerPosition = $this->getPolyCenter($polyCoords);
-						$stateCenterDistance[$item->properties->NAME][] = $this->getLatLongDistance($lat, $lon, $centerPosition[0], $centerPosition[1]);
+						$stateCenterDistance[$item->properties->$field][] = $this->getLatLongDistance($lat, $lon, $centerPosition[0], $centerPosition[1]);
 
-					$statePolygons[$item->properties->NAME][] = $multipoly;
+					$statePolygons[$item->properties->$field][] = $multipoly;
 				}
 			}
 		}
