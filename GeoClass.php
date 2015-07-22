@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
+namespace USGeolocation;
 
 class GeoClass {
 	
@@ -10,11 +10,11 @@ class GeoClass {
 
 	function __construct(){
 		$this->geojson = json_decode(file_get_contents(__DIR__ . '/data/state_lines.json'));
-		$this->zipcodes = json_decode(file_get_contents(__DIR__ . '/data/state_zip.json'));
+		$this->zipcodes = json_decode(file_get_contents(__DIR__ . '/data/state_zip.json'), true);
 	}
 
 	private function insideStatePolygon($lat, $lon, $polySet) {
-		$polyShape = new \Geometry\Polygon($polySet);
+		$polyShape = new \USGeolocation\Polygon($polySet);
 		$polySet = $polyShape->getOutline();
 		$polyShape->setOutline($polySet);
 
@@ -25,7 +25,7 @@ class GeoClass {
 	}
 
 	private function getPolyCenter($polySet) {
-		$polyShape = new \Geometry\Polygon($polySet);
+		$polyShape = new \USGeolocation\Polygon($polySet);
 		$polySet= $polyShape->getOutline();
 		$polyShape->setOutline($polySet);
 
@@ -36,7 +36,7 @@ class GeoClass {
 	}
 
 	public function getStateFromZip($zip) {
-		return $this->zipcodes[end(array_filter(array_keys($this->zipcodes),
+		return $this->zipcodes[@end(array_filter(array_keys($this->zipcodes),
 			function($v) use ($zip) {
 				return ($v < $zip);
 			}
